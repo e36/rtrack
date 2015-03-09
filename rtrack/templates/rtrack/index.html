@@ -1,0 +1,37 @@
+{% extends 'rtrack/base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block body_block %}
+<div class="row">
+    <div class="col-md-8">
+        <p>Latest Reports - <a href="{% url 'createreport' %}">Create a new report.</a></p>
+        <hr>
+        {% if report_list %}
+            <ul>
+                {% for report in report_list %}
+                <li><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.last_updated }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reports are available.</p>
+        {% endif %}
+
+
+    </div>
+
+    <div class="col-md-4">
+        Active User Accounts - {{ blehnote }}
+        <hr>
+        {% if refdata %}
+            <ul>
+                {% for user in refdata %}
+                    <li><a href="{% url 'user_page' user.name %}">{{ user.name }}</a> - {{ user.count }} references</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No user data is available</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

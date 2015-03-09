@@ -1,0 +1,48 @@
+{% extends 'rtrack/base.html' %}
+
+{% block title %}Report View{% endblock %}
+
+{% block body_block %}
+<div class="container">
+{% if report_data %}
+    <p>Title: {{ report_data.title }}</p>
+    <p>Description: {{ report_data.description }}</p>
+    <p>Created: {{ report_data.created }}</p>
+    <p>Last Updated: {{ report_data.last_updated }}</p>
+{% else %}
+    <p>No report data is available.</p>
+{% endif %}
+<p><a href="{% url 'index' %}">Back to the Index</a></p>
+
+<hr>
+{% if userlinkdata %}
+    <p>Associated Accounts - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>
+    {% for udata in userlinkdata %}
+        <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }}</p>
+    {% endfor %}
+{% else %}
+    <p>No users associated with this report. - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>
+{% endif %}
+
+<hr>
+{% if urllinkdata %}
+    <p>Associated URLs - <a href="{% url 'create_url_link' report_data.id %}">Add a URL</a></p>
+    {% for udata in urllinkdata %}
+        <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
+    {% endfor %}
+{% else %}
+    <p>No URLs associated with this report. - <a href="{% url 'create_url_link' report_data.id %}">Add a URL</a></p>
+{% endif %}
+
+<hr>
+{% if notelinkdata %}
+    <p>Associated Notes - <a href="{% url 'create_note_link' report_data.id %}">Add a note</a></p>
+    {% for udata in notelinkdata %}
+        <p>{{ udata.note }}</p>
+    {% endfor %}
+{% else %}
+    <p>No notes associated with this report. - <a href="{% url 'create_note_link' report_data.id %}">Add a note</a></p>
+{% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'rtrack/base.html' %}
+{% block title %}Create User Note{% endblock %}
+
+{% block body_block %}
+<h1>Associate a dang note with {{user_name}}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'create_user_note' user_name %}" method="POST">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        <p>
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+        </p>
+    {% endfor %}
+<input type="Submit" name="Submit" value="Create Note">
+{% endblock %}

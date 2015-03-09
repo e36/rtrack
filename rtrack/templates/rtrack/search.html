@@ -1,0 +1,31 @@
+{% extends 'rtrack/base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
+<p>Search</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'search' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        <p>
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+        </p>
+    {% endfor %}
+<input type="Submit" name="Submit" value="Search">
+
+{% if queryresult %}
+    <hr>
+    <p>Your query for {{ username }} returned the following results:</p>
+    <ul>
+        {% for name in queryresult %}
+            <li><a href="{% url 'user_page' name.name %}">{{ name.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

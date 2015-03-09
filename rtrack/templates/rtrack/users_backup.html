@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ userdata.name }}</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+</head>
+<body>
+
+
+{% if userdata %}
+    <p><h1>User report for {{ userdata.name }}</h1></p>
+    <p>Created: {{ userdata.created }}</p>
+
+{% else %}
+    <p>No user data is available.</p>
+{% endif %}
+
+<hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <p>Notes - <a href="{% url 'create_user_note' userdata.name %}">Add</a></p>
+        <hr>
+        {% if usernotes %}
+            <ul>
+                {% for note in usernotes %}
+                    <li>{{ note.timestamp }} - {{ note.note }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No notes exist for this user.</p>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <p>Links</p>
+        <hr>
+        <p>Reports</p>
+        {% if reportdata %}
+            <ul>
+            {% for report in reportdata %}
+                <li><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.last_updated }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reports are available.</p>
+        {% endif %}
+        <p>Modmail</p>
+    </div>
+    <div class="col-md-4">
+        <p>Bans and other activity</p>
+        <hr>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"></head>
+<body>
+
+<h1>Create a dang report</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'createreport' %}" method="POST">
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+        <p>
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+        </p>
+    {% endfor %}
+
+    <input type="Submit" name="Submit" value="Create Report">
+
+
+
+
+</form>
+
+</body>
+</html>

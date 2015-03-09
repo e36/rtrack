@@ -1,0 +1,47 @@
+{% extends 'rtrack/base.html' %}
+
+{% block title %}User View{% endblock %}
+
+{% block body_block %}
+{% if userdata %}
+    <p><h1>User report for {{ userdata.name }}</h1></p>
+    <p>Created: {{ userdata.created }}</p>
+    <p><a href="{% url 'index' %}">Return to the index</a></p>
+
+{% else %}
+    <p>No user data is available.</p>
+{% endif %}
+
+<hr>
+
+<div class="row">
+    <div class="col-md-8">
+        <p>Notes - <a href="{% url 'create_user_note' userdata.name %}">Add</a></p>
+        <hr>
+        {% if usernotes %}
+            <ul>
+                {% for note in usernotes %}
+                    <li>{{ note.timestamp }} - {{ note.note }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No notes exist for this user.</p>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <p>Links</p>
+        <hr>
+        <p>Reports</p>
+        {% if reportdata %}
+            <ul>
+            {% for report in reportdata %}
+                <li><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.last_updated }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reports are available.</p>
+        {% endif %}
+        <p>Modmail</p>
+    </div>
+
+{% endblock %}
