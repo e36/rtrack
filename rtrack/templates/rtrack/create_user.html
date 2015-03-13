@@ -1,0 +1,22 @@
+{% extends 'rtrack/base.html' %}
+{% block title %}create user{% endblock %}
+
+{% block body_block %}
+<div class="container">
+<h1>Create a dang user</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'create_user' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        <p>
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+        </p>
+    {% endfor %}
+<input type="Submit" name="Submit" value="Create User">
+</form>
+</div>
+{% endblock %}

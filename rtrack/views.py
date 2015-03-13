@@ -227,3 +227,29 @@ def user_search(request):
         form = UsernameSearchForm()
 
     return render(request, 'rtrack/search.html', {'form': form})
+
+
+def add_user(request):
+    if request.method == "POST":
+
+        # we are going to reuse the UsernameSearchForm, because all we need
+        # is a charfield and not another identical model
+        form = UsernameSearchForm(request.POST)
+
+        if form.is_valid():
+
+            #   grab cleaned user name
+            username = form.cleaned_data['username']
+
+            # create the object if it doesn't already exist
+            Username.objects.get_or_create(name=username)
+
+            # redirect to the user view
+            url = reverse('user_page', kwargs={'user_name': username})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = UsernameSearchForm()
+
+        return render(request, 'rtrack/create_user.html', {'form': form})
