@@ -21,7 +21,7 @@
     </div>
 
     <div class="col-md-4">
-        Active User Accounts - {{ blehnote }}
+        Active User Accounts - <a href="{% url 'create_user' %}">Add</a>
         <hr>
         {% if refdata %}
             <ul>

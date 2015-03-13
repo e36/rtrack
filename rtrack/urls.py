@@ -13,4 +13,5 @@ urlpatterns = patterns('',
                        url(r'search/$', views.user_search, name='search'),
                        url(r'user/(?P<user_name>\w+)/$', views.user_page, name='user_page'),
                        url(r'user/(?P<user_name>\w+)/createnote/$', views.user_add_note, name='create_user_note'),
+                       url(r'create_user/$', views.add_user, name='create_user'),
                        )
