@@ -84,5 +84,5 @@ class ModmailLink(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     modmail_id = models.CharField(max_length=50)
     subject = models.CharField(max_length=250)
-    # created_utc is when the message was submitted in reddit
-    created_utc = models.CharField(max_length=25)
+    # created_utc is when the message was submitted in reddit - This is being pulled for now
+    #created_utc = models.CharField(max_length=25)
