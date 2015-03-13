@@ -272,10 +272,10 @@ def create_modmail_link(request, user_name):
             # get cleaned data ['subject', 'modmail_id', 'created_utc']
             subject = form.cleaned_data['subject']
             modmail_id = form.cleaned_data['modmail_id']
-            created_utc = form.cleaned_data['created_utc']
+            #created_utc = form.cleaned_data['created_utc']
 
             # create the link
-            ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id, created_utc=created_utc)
+            ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id)
 
             # redirect to the user view
             url = reverse('user_page', kwargs={'user_name': user_name})
