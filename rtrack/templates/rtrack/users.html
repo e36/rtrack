@@ -41,7 +41,16 @@
         {% else %}
             <p>No reports are available.</p>
         {% endif %}
-        <p>Modmail</p>
+        <p>Modmail - <a href="{% url 'create_modmail_link' userdata.name %}">Add</a></p>
+        {% if modmail %}
+            <ul>
+            {% for mail in modmail %}
+                <li><a href="http://www.reddit.com/message/messages/{{ mail.modmail_id }}">{{ mail.subject }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No conversations are available.</p>
+        {% endif %}
     </div>
-
+</div>
 {% endblock %}

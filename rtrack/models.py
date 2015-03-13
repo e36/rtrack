@@ -76,3 +76,13 @@ class UsernameModmailLink(models.Model):
 
 class UsernameSearch(models.Model):
     username = models.CharField(max_length=200) # doesn't need to be a foreignkey() because we aren't linking it
+
+
+class ModmailLink(models.Model):
+    user = models.ForeignKey(Username)
+    # timestamp is when the record was added to the database
+    timestamp = models.DateTimeField(auto_now_add=True)
+    modmail_id = models.CharField(max_length=50)
+    subject = models.CharField(max_length=250)
+    # created_utc is when the message was submitted in reddit
+    created_utc = models.CharField(max_length=25)

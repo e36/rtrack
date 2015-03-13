@@ -13,5 +13,6 @@ urlpatterns = patterns('',
                        url(r'search/$', views.user_search, name='search'),
                        url(r'user/(?P<user_name>\w+)/$', views.user_page, name='user_page'),
                        url(r'user/(?P<user_name>\w+)/createnote/$', views.user_add_note, name='create_user_note'),
+                       url(r'user/(?P<user_name>\w+)/modmail_link/$', views.create_modmail_link, name='create_modmail_link'),
                        url(r'create_user/$', views.add_user, name='create_user'),
                        )

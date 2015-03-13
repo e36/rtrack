@@ -160,6 +160,9 @@ def user_page(request, user_name):
     # get user note data
     usernote = UsernameNote.objects.filter(username=userdata).order_by('-timestamp')
 
+    # get modmail links
+    modmail = ModmailLink.objects.filter(user=userdata)
+
     # get report data for each link
     # init empty list for holding report tuples
     reportdata = []
@@ -172,6 +175,7 @@ def user_page(request, user_name):
                'linkdata': linkdata,
                'reportdata': reportdata,
                'usernotes': usernote,
+               'modmail': modmail,
                }
 
     return render(request, 'rtrack/users.html', context)
@@ -253,3 +257,32 @@ def add_user(request):
         form = UsernameSearchForm()
 
         return render(request, 'rtrack/create_user.html', {'form': form})
+
+
+def create_modmail_link(request, user_name):
+    if request.method == "POST":
+
+        form = ModmailLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # get username object
+            user_obj = Username.objects.get(name=user_name)
+
+            # get cleaned data ['subject', 'modmail_id', 'created_utc']
+            subject = form.cleaned_data['subject']
+            modmail_id = form.cleaned_data['modmail_id']
+            created_utc = form.cleaned_data['created_utc']
+
+            # create the link
+            ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id, created_utc=created_utc)
+
+            # redirect to the user view
+            url = reverse('user_page', kwargs={'user_name': user_name})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = ModmailLinkForm()
+
+        return render(request, 'rtrack/create_modmail_link.html', {'form': form, 'user_name': user_name})
