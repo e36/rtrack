@@ -51,3 +51,13 @@ class UsernameSearchForm(forms.ModelForm):
     class Meta:
         model = UsernameSearch
         fields = ['username']
+
+
+class ModmailLinkForm(forms.ModelForm):
+    modmail_id = forms.CharField(max_length=50, help_text='Modmail ID: ')
+    subject = forms.CharField(max_length=250, help_text='Subject: ')
+    created_utc = forms.CharField(max_length=25, help_text='Created UTC: ')
+
+    class Meta:
+        model = ModmailLink
+        fields = ['subject', 'modmail_id', 'created_utc']
