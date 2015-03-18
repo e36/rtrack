@@ -56,8 +56,19 @@ class UsernameSearchForm(forms.ModelForm):
 class ModmailLinkForm(forms.ModelForm):
     modmail_id = forms.CharField(max_length=50, help_text='Modmail ID: ')
     subject = forms.CharField(max_length=250, help_text='Subject: ')
-    #created_utc = forms.CharField(max_length=25, help_text='Created UTC: ')
+    # created_utc = forms.CharField(max_length=25, help_text='Created UTC: ')
 
     class Meta:
         model = ModmailLink
         fields = ['subject', 'modmail_id']
+
+
+class LoginFormModelForm(forms.ModelForm):
+    user = forms.CharField(max_length=100)
+    password = forms.CharField(max_length=100)
+    redirect_next = forms.CharField(max_length=100)
+
+    class Meta:
+        model = LoginFormModel
+        fields = ['user', 'password']
+
