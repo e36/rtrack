@@ -61,14 +61,3 @@ class ModmailLinkForm(forms.ModelForm):
     class Meta:
         model = ModmailLink
         fields = ['subject', 'modmail_id']
-
-
-class LoginFormModelForm(forms.ModelForm):
-    user = forms.CharField(max_length=100)
-    password = forms.CharField(max_length=100)
-    redirect_next = forms.CharField(max_length=100)
-
-    class Meta:
-        model = LoginFormModel
-        fields = ['user', 'password']
-
