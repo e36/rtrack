@@ -1,10 +1,12 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
 from rtrack import views
 
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
+                       url('^accounts/login/$', views.user_login, name='login'),
+                       url('^accounts/logout/$', views.user_logout, name='logout'),
                        url(r'report/(?P<report_id>\d+)/$', views.reportview, name='report'),
                        url(r'report/(?P<report_id>\d+)/createassociation/$', views.create_association, name='createassociation'),
                        url(r'report/(?P<report_id>\d+)/urlink/$', views.create_url_link, name='create_url_link'),

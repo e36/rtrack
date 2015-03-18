@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -85,4 +86,10 @@ class ModmailLink(models.Model):
     modmail_id = models.CharField(max_length=50)
     subject = models.CharField(max_length=250)
     # created_utc is when the message was submitted in reddit - This is being pulled for now
-    #created_utc = models.CharField(max_length=25)
+    # created_utc = models.CharField(max_length=25)
+
+
+class LoginFormModel(models.Model):
+    user = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    next = models.CharField(max_length=100)

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from rtrack.forms import *
 from rtrack.models import *
@@ -9,7 +12,7 @@ from rtrack.other import *
 
 # TODO Implement timezones somehow, may require user accounts
 
-
+@login_required
 def index(request):
     report_list = Report.objects.order_by('-last_updated')
     userreferencedata = builduserlist()
@@ -19,6 +22,7 @@ def index(request):
     return render(request, 'rtrack/index.html', context)
 
 
+@login_required
 def reportview(request, report_id):
     report_data = Report.objects.get(id=report_id)
     userlinkdata = UserReportLink.objects.filter(report=report_id)
@@ -34,6 +38,7 @@ def reportview(request, report_id):
     return render(request, 'rtrack/reportview.html', context)
 
 
+@login_required
 def createreport(request):
 
     if request.method == "POST":
@@ -70,6 +75,7 @@ def createreport(request):
     return render(request, 'rtrack/createreport.html', {'form': form})
 
 
+@login_required
 def create_association(request, report_id):
     if request.method == "POST":
         form = UserReportLinkForm(request.POST)
@@ -98,6 +104,7 @@ def create_association(request, report_id):
     return render(request, 'rtrack/createassociation.html', {'form': form, 'report_id': report_id})
 
 
+@login_required
 def create_url_link(request, report_id):
     if request.method == "POST":
         form = UrlReportLinkForm(request.POST)
@@ -124,6 +131,7 @@ def create_url_link(request, report_id):
     return render(request, 'rtrack/create_url_link.html', {'form': form, 'report_id': report_id})
 
 
+@login_required
 def create_note_link(request, report_id):
     if request.method == "POST":
         form = NoteReportLinkForm(request.POST)
@@ -150,6 +158,7 @@ def create_note_link(request, report_id):
     return render(request, 'rtrack/create_note_link.html', {'form': form, 'report_id': report_id})
 
 
+@login_required
 def user_page(request, user_name):
     # get username object
     userdata = Username.objects.get(name=user_name)
@@ -181,6 +190,7 @@ def user_page(request, user_name):
     return render(request, 'rtrack/users.html', context)
 
 
+@login_required
 def user_add_note(request, user_name):
     if request.method == "POST":
         form = UsernameNoteForm(request.POST)
@@ -207,6 +217,7 @@ def user_add_note(request, user_name):
     return render(request, 'rtrack/create_usernote.html', {'form': form, 'user_name': user_name})
 
 
+@login_required
 def user_search(request):
     if request.method == "POST":
         form = UsernameSearchForm(request.POST)
@@ -233,6 +244,7 @@ def user_search(request):
     return render(request, 'rtrack/search.html', {'form': form})
 
 
+@login_required
 def add_user(request):
     if request.method == "POST":
 
@@ -259,6 +271,7 @@ def add_user(request):
         return render(request, 'rtrack/create_user.html', {'form': form})
 
 
+@login_required
 def create_modmail_link(request, user_name):
     if request.method == "POST":
 
@@ -286,3 +299,54 @@ def create_modmail_link(request, user_name):
         form = ModmailLinkForm()
 
         return render(request, 'rtrack/create_modmail_link.html', {'form': form, 'user_name': user_name})
+
+
+def user_login(request):
+
+    # If the request is a HTTP POST, try to pull out the relevant information.
+    if request.method == 'POST':
+
+        # Gather the username and password provided by the user.
+        # This information is obtained from the login form.
+
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Use Django's machinery to attempt to see if the username/password
+        # combination is valid - a User object is returned if it is.
+        user = authenticate(username=username, password=password)
+
+        # If we have a User object, the details are correct.
+        # If None (Python's way of representing the absence of a value), no user
+        # with matching credentials was found.
+        if user:
+            # Is the account active? It could have been disabled.
+            if user.is_active:
+                # If the account is valid and active, we can log the user in.
+                # We'll send the user back to the homepage.
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                # An inactive account was used - no logging in!
+                return HttpResponse("Your rtrack account is disabled.")
+        else:
+            # Bad login details were provided. So we can't log the user in.
+            print("Invalid login details: {0}, {1}").format(username, password)
+            return HttpResponse("Invalid login details supplied.")
+
+    # The request is not a HTTP POST, so display the login form.
+    # This scenario would most likely be a HTTP GET.
+    else:
+        # No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        return render(request, 'registration/login.html', {})
+
+
+@login_required
+def user_logout(request):
+    # since we know the user is logged in, we can just log them out
+    logout(request)
+
+    # now take the user back to the homepage
+    return HttpResponseRedirect(reverse('login'))
