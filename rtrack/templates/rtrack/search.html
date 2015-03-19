@@ -9,23 +9,31 @@
 
 <form action="{% url 'search' %}" method="POST">
     {% csrf_token %}
-    {% for field in form.visible_fields %}
-        <p>
-        {{ field.errors }}
-        {{ field.help_text }}
-        {{ field }}
-        </p>
-    {% endfor %}
+    Search: <input type="text" name="search_text" value="" size="50" />
 <input type="Submit" name="Submit" value="Search">
 
 {% if queryresult %}
     <hr>
-    <p>Your query for {{ username }} returned the following results:</p>
-    <ul>
-        {% for name in queryresult %}
-            <li><a href="{% url 'user_page' name.name %}">{{ name.name }}</a></li>
-        {% endfor %}
-    </ul>
+    <p>Your query for <b>{{ query_text }}</b> returned the following results:</p>
+
+    {% if user_result %}
+    <p>Users</p>
+        <ul>
+            {% for name in user_result %}
+                <li><a href="{% url 'user_page' name.name %}">{{ name.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if report_result %}
+    <p>Reports</p>
+        <ul>
+            {% for report in report_result %}
+                <li><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.created }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endif %}
+</form>
 
 {% endblock %}
