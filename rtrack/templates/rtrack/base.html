@@ -11,7 +11,7 @@
 <body>
 <div class="container">
 {% block nav_block %}
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand">rtrack</a>
@@ -26,10 +26,10 @@
     </div>
 </nav>
 {% endblock %}
-</div>
-<div class="container">
-    {% block body_block %}
-    {% endblock %}
-</div>
+<div class="jumbotron">
+{% block body_block %}
+{% endblock %}
+</div> <!-- jumbotron -->
+</div> <!-- container -->
 </body>
 </html>
