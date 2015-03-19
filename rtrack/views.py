@@ -218,30 +218,41 @@ def user_add_note(request, user_name):
 
 
 @login_required
-def user_search(request):
+def search(request):
     if request.method == "POST":
-        form = UsernameSearchForm(request.POST)
 
-        if form.is_valid():
+        # get query string
+        searchname = request.POST.get('search_text')
 
-            # get form data
-            searchname = form.cleaned_data['username']
+        # set queryresult to false
+        queryresult = False
 
-            # "search" the Usernames model. __startswith is what I'm using until I can find a better method
-            foundnames = Username.objects.filter(name__startswith=searchname)
+        # "search" the Usernames and Reports model. __contains is what I'm using until I can find a better method
+        # we're searching both titles and descriptions in report
+        foundnames = Username.objects.filter(name__contains=searchname)
+        foundreports = Report.objects.filter(title__contains=searchname)
+        founddesc = Report.objects.filter(description__contains=searchname)
 
-            #build context
-            context = {'username': searchname,
-                       'queryresult': foundnames,
-                       }
+        # combine the two into a set so we eliminate any duplicates
+        report_result = list(set(foundreports) | set(founddesc))
 
-            return render(request, 'rtrack/search.html', context)
-        else:
-            print(form.errors)
+        # figure out if any results exists, and set queryresult to true if they do
+        if report_result or foundnames:
+            queryresult = True
+
+
+
+        #build context
+        context = {'query_text': searchname,
+                   'user_result': foundnames,
+                   'report_result': report_result,
+                   'queryresult': queryresult,
+                   }
+
+        return render(request, 'rtrack/search.html', context)
     else:
-        form = UsernameSearchForm()
+        return render(request, 'rtrack/search.html', {})
 
-    return render(request, 'rtrack/search.html', {'form': form})
 
 
 @login_required

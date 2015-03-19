@@ -19,6 +19,7 @@
         <div class="navbar-collapse collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'index' %}">index</a></li>
+                <li><a href="{% url 'search' %}">search</a></li>
                 <li><a href="">Logged in as {{ username }}</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
             </ul>
@@ -26,10 +27,10 @@
     </div>
 </nav>
 {% endblock %}
-<div class="jumbotron">
+<div class="container">
 {% block body_block %}
 {% endblock %}
-</div> <!-- jumbotron -->
+</div> <!-- body container -->
 </div> <!-- container -->
 </body>
 </html>
