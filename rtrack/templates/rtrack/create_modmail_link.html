@@ -2,7 +2,7 @@
 {% block title %}Create User Note{% endblock %}
 
 {% block body_block %}
-<div class="container">
+
 <h1>Associate a dang modmail conversation with {{user_name}}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -18,5 +18,5 @@
     {% endfor %}
 <input type="Submit" name="Submit" value="Create Link">
 </form>
-</div>
+
 {% endblock %}

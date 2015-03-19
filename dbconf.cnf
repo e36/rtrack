@@ -1,0 +1,6 @@
+[rtrack]
+host = 127.0.0.1
+user = root
+database = rtrack
+#password =
+default-character-set = utf8mb4

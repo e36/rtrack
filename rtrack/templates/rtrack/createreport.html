@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+{% extends 'rtrack/base.html' %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"></head>
-<body>
+{% block title %}Report{% endblock %}
+
+{% block body_block %}
 
 <h1>Create a dang report</h1>
 
@@ -31,5 +26,4 @@
 
 </form>
 
-</body>
-</html>
+{% endblock %}
