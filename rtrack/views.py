@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password, make_password, is_password_usable
 
 from rtrack.forms import *
 from rtrack.models import *
@@ -11,6 +12,7 @@ from rtrack.other import *
 # Create your views here.
 
 # TODO Implement timezones somehow, may require user accounts
+
 
 @login_required
 def index(request):
@@ -254,7 +256,6 @@ def search(request):
         return render(request, 'rtrack/search.html', {})
 
 
-
 @login_required
 def add_user(request):
     if request.method == "POST":
@@ -361,3 +362,9 @@ def user_logout(request):
 
     # now take the user back to the homepage
     return HttpResponseRedirect(reverse('login'))
+
+
+@login_required
+def password_changed(request):
+    # just a few to show that the password change was made successfully.
+    return render(request, 'registration/password_change_complete.html', {})
