@@ -18,7 +18,7 @@
 {% if userlinkdata %}
     <p>Associated Accounts - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>
     {% for udata in userlinkdata %}
-        <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }}</p>
+        <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
     {% endfor %}
 {% else %}
     <p>No users associated with this report. - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>

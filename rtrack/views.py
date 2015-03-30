@@ -242,9 +242,7 @@ def search(request):
         if report_result or foundnames:
             queryresult = True
 
-
-
-        #build context
+        # build context
         context = {'query_text': searchname,
                    'user_result': foundnames,
                    'report_result': report_result,
@@ -297,7 +295,7 @@ def create_modmail_link(request, user_name):
             # get cleaned data ['subject', 'modmail_id', 'created_utc']
             subject = form.cleaned_data['subject']
             modmail_id = form.cleaned_data['modmail_id']
-            #created_utc = form.cleaned_data['created_utc']
+            # created_utc = form.cleaned_data['created_utc']
 
             # create the link
             ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id)
@@ -368,3 +366,27 @@ def user_logout(request):
 def password_changed(request):
     # just a few to show that the password change was made successfully.
     return render(request, 'registration/password_change_complete.html', {})
+
+
+@login_required
+def remove_user_link(request, report_id, user_name):
+    # removes a username from being associated with a report
+
+    # get user objects
+    user_obj = Username.objects.get(name=user_name)
+    report_obj = Report.objects.get(id=report_id)
+
+    # get the report link and delete it, because fuck it
+    user_link = UserReportLink.objects.get(name=user_obj, report=report_obj)
+
+    # only delete it if it exists, otherwise return to the report view
+    if user_link:
+        user_link.delete()
+    else:
+        # return back to the report view
+        url = reverse('report', kwargs={'report_id': report_id})
+        return HttpResponseRedirect(url)
+
+    # return back to the report view
+    url = reverse('report', kwargs={'report_id': report_id})
+    return HttpResponseRedirect(url)
