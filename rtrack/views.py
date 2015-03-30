@@ -369,11 +369,11 @@ def password_changed(request):
 
 
 @login_required
-def remove_user_link(request, report_id, user_id):
+def remove_user_link(request, report_id, user_name):
     # removes a username from being associated with a report
 
     # get user objects
-    user_obj = Username.objects.get(id=user_id)
+    user_obj = Username.objects.get(name=user_name)
     report_obj = Report.objects.get(id=report_id)
 
     # get the report link and delete it, because fuck it
