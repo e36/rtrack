@@ -8,9 +8,9 @@
         <p>Latest Reports - <a href="{% url 'createreport' %}">Create a new report.</a></p>
         <hr>
         {% if report_list %}
-            <ul>
+            <ul class="list-group">
                 {% for report in report_list %}
-                <li><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.last_updated }}</a></li>
+                <li class="list-group-item"><a href="{% url 'report' report.id %}">{{ report.title }} - {{ report.last_updated }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -24,9 +24,9 @@
         Active User Accounts - <a href="{% url 'create_user' %}">Add</a>
         <hr>
         {% if refdata %}
-            <ul>
+            <ul class="list-group">
                 {% for user in refdata %}
-                    <li><a href="{% url 'user_page' user.name %}">{{ user.name }}</a> - {{ user.count }} references</li>
+                    <li class="list-group-item"><a href="{% url 'user_page' user.name %}">{{ user.name }}</a> <span class="badge">{{ user.count }}</span></li>
                 {% endfor %}
             </ul>
         {% else %}
