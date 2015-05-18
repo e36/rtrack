@@ -15,7 +15,7 @@ class Username(models.Model):
 
 class Report(models.Model):
     title = models.CharField(max_length=100)
-    created = models.DateTimeField(auto_now=True, auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     description = models.TextField()
 
