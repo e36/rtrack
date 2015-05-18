@@ -76,6 +76,10 @@ def createreport(request):
 
 @login_required
 def create_association(request, report_id):
+
+    # get report name
+    report_obj = Report.objects.get(id=report_id)
+
     if request.method == "POST":
         form = UserReportLinkForm(request.POST)
 
@@ -100,7 +104,7 @@ def create_association(request, report_id):
     else:
         form = UserReportLinkForm()
 
-    return render(request, 'rtrack/createassociation.html', {'form': form, 'report_id': report_id})
+    return render(request, 'rtrack/createassociation.html', {'form': form, 'report_id': report_id, 'report_title': report_obj.title})
 
 
 @login_required

@@ -5,14 +5,17 @@
 <p>{{ errors }}</p>
 {% endif %}
 
-<form method="post" class="form-horizontal" action="{% url 'login' %}">
+
+<form method="post" class="form-inline" action="{% url 'login' %}">
 {% csrf_token %}
 <div class="form-group">
-    Username: <input type="text" name="username" value="" size="50" />
+    <label for="username">Username</label>
+    <input class="form-control" type="text" id="username" name="username" value="" size="20" />
 </div>
 
 <div class="form-group">
-    Password: <input type="password" name="password" value="" size="50" />
+    <label for="pword">Password</label>
+    <input class="form-control" type="password" id="pword" name="password" value="" size="20" />
 </div>
 
 
@@ -20,4 +23,9 @@
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
+<script type="text/javascript">
+$(document).ready(function() {
+    $('form:first *:input[type!=hidden]:first').focus();
+});
+</script>
 {% endblock %}
