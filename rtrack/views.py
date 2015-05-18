@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password, make_password, is_password_usable
+from django.conf import settings
 
 from rtrack.forms import *
 from rtrack.models import *
@@ -205,8 +206,11 @@ def user_add_note(request, user_name):
             # get user data
             user_data = Username.objects.get(name=user_name)
 
+            # get self data
+            self_data = User.objects.get(username=request.user.username)
+
             # create the note
-            UsernameNote.objects.create(username=user_data, note=note)
+            UsernameNote.objects.create(username=user_data, author=self_data, note=note)
 
             # return to the user_page view
             url = reverse('user_page', kwargs={'user_name': user_name})
