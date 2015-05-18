@@ -1,14 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import check_password, make_password, is_password_usable
-from django.conf import settings
 
-from rtrack.forms import *
-from rtrack.models import *
 from rtrack.other import *
 # Create your views here.
 
@@ -235,9 +231,9 @@ def search(request):
 
         # "search" the Usernames and Reports model. __contains is what I'm using until I can find a better method
         # we're searching both titles and descriptions in report
-        foundnames = Username.objects.filter(name__contains=searchname)
-        foundreports = Report.objects.filter(title__contains=searchname)
-        founddesc = Report.objects.filter(description__contains=searchname)
+        foundnames = Username.objects.filter(name__icontains=searchname)
+        foundreports = Report.objects.filter(title__icontains=searchname)
+        founddesc = Report.objects.filter(description__icontains=searchname)
 
         # combine the two into a set so we eliminate any duplicates
         report_result = list(set(foundreports) | set(founddesc))
