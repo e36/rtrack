@@ -3,21 +3,18 @@
 {% block title %}Report{% endblock %}
 
 {% block body_block %}
-<h1>Associate a dang user with {{report_id}}</h1>
+<h2>Associate a dang user with "{{ report_title }}"</h2>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'createassociation' report_id %}" method="POST">
+<form action="{% url 'createassociation' report_id %}" class="form-inline" method="POST">
     {% csrf_token %}
-    {% for field in form.visible_fields %}
-        <p>
-        {{ field.errors }}
-        {{ field.help_text }}
-        {{ field }}
-        </p>
-    {% endfor %}
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control" type="text" id="name" name="name" value="" size="20" />
+    </div>
 
-    <input type="Submit" name="Submit" value="Create Association">
+    <input type="Submit" name="Submit" class="btn btn-default" value="Create Association">
 
 
 

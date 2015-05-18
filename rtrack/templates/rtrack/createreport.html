@@ -1,6 +1,6 @@
 {% extends 'rtrack/base.html' %}
 
-{% block title %}Report{% endblock %}
+{% block title %}Create a report{% endblock %}
 
 {% block body_block %}
 
@@ -11,19 +11,23 @@
 <form action="{% url 'createreport' %}" method="POST">
     {% csrf_token %}
 
-    {% for field in form.visible_fields %}
-        <p>
-        {{ field.errors }}
-        {{ field.help_text }}
-        {{ field }}
-        </p>
-    {% endfor %}
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input class="form-control" type="text" id="title" name="title" value="" size="20" />
+    </div>
 
-    <input type="Submit" name="Submit" value="Create Report">
-
-
-
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" rows="4" id="description" name="description" value="" size="20"></textarea>
+    </div>
+    <input type="Submit" name="Submit" class="btn btn-default" value="Create Report">
 
 </form>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('form:first *:input[type!=hidden]:first').focus();
+});
+</script>
 
 {% endblock %}

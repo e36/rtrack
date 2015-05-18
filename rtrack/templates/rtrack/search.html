@@ -3,13 +3,13 @@
 {% block title %}Search{% endblock %}
 
 {% block body_block %}
-<p>Search</p>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'search' %}" method="POST">
     {% csrf_token %}
-    Search: <input type="text" name="search_text" value="" size="50" />
+    <label for="search_text">Search:</label>
+    <input type="text" name="search_text" id="search_text" value="" size="50" />
 <input type="Submit" name="Submit" value="Search">
 
 {% if queryresult %}
@@ -35,5 +35,11 @@
     {% endif %}
 {% endif %}
 </form>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('form:first *:input[type!=hidden]:first').focus();
+});
+</script>
 
 {% endblock %}
