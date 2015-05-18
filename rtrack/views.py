@@ -319,7 +319,6 @@ def user_login(request):
         # Gather the username and password provided by the user.
         # This information is obtained from the login form.
 
-
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -390,3 +389,14 @@ def remove_user_link(request, report_id, user_name):
     # return back to the report view
     url = reverse('report', kwargs={'report_id': report_id})
     return HttpResponseRedirect(url)
+
+
+@login_required
+def about(request):
+    """
+    Displays the about page.  Includes information about the system and a changelog
+    :param request:
+    :return: Nothing!
+    """
+
+    return render(request, 'rtrack/about.html')
