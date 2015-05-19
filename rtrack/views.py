@@ -230,11 +230,14 @@ def create_note_link_ajax(request, report_id):
             # grab cleaned note datas
             note = form.cleaned_data['note']
 
+            # get self data
+            self_data = User.objects.get(username=request.user.username)
+
             # get report object
             report_obj = Report.objects.get(pk=report_id)
 
             # get_or_create the url link db entry
-            NoteReportLink.objects.get_or_create(note=note, report=report_obj)
+            NoteReportLink.objects.get_or_create(note=note, author=self_data, report=report_obj)
 
             # return back to the report view
             url = reverse('report', kwargs={'report_id': report_id})

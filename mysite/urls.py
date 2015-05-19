@@ -3,6 +3,8 @@ from django.contrib import admin
 
 from rtrack import views
 
+# TODO: Once the modal forms / ajax views are reliable, we need to pull out the old separate page forms
+
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
                        url(r'^admin/', include(admin.site.urls)),

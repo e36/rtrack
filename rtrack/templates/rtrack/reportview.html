@@ -102,34 +102,47 @@
 <p><a href="{% url 'index' %}">Back to the Index</a></p>
 
 <hr>
-{% if userlinkdata %}
-    <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
-    {% for udata in userlinkdata %}
-        <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
-    {% endfor %}
-{% else %}
-    <p>No users associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if userlinkdata %}
+        <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
+        {% for udata in userlinkdata %}
+            <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
+        {% endfor %}
+    {% else %}
+        <p>No users associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
+    {% endif %}
+    </div>
+</div>
 
-<hr>
-{% if urllinkdata %}
-    <p>Associated URLs  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
-    {% for udata in urllinkdata %}
-        <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
-    {% endfor %}
-{% else %}
-    <p>No URLs associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if urllinkdata %}
+        <p>Associated URLs  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
+        {% for udata in urllinkdata %}
+            <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No URLs associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
+    {% endif %}
+    </div>
+</div>
 
-<hr>
-{% if notelinkdata %}
-    <p>Associated Notes  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
-    {% for udata in notelinkdata %}
-        <p>{{ udata.note }}</p>
-    {% endfor %}
-{% else %}
-    <p>No notes associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if notelinkdata %}
+        <p>Associated Notes  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
+        {% for udata in notelinkdata %}
+            <div class="panel panel-default">
+                <div class="panel-heading"><p>{{ udata.timestamp }} - {{ udata.author }}</p></div>
+                <div class="panel-body"><p>{{ udata.note }}</p></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
+    {% endif %}
+    </div>
+</div>
 
 </div>
 

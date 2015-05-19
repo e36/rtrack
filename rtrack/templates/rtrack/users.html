@@ -16,18 +16,23 @@
 
 <div class="row">
     <div class="col-md-8">
-        <p>Notes - <a href="{% url 'create_user_note' userdata.name %}">Add</a></p>
-        <hr>
-        {% if usernotes %}
-            <ul class="list-group">
-                {% for note in usernotes %}
-                    <li class="list-group-item"><p>{{ note.timestamp }} - {{ note.author }}</p>
-                    <p>{{ note.note }}</p></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No notes exist for this user.</p>
-        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>Notes - <a href="{% url 'create_user_note' userdata.name %}">Add</a></p>
+            </div>
+            <div class="panel-body">
+                {% if usernotes %}
+                    <div class="panel panel-default">
+                        {% for note in usernotes %}
+                            <div class="panel-heading"><p>{{ note.timestamp }} - {{ note.author }}</p></div>
+                            <div class="panel-body"><p>{{ note.note }}</p></div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No notes exist for this user.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
         <p>Links</p>
