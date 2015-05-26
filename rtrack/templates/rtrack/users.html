@@ -3,6 +3,70 @@
 {% block title %}User View{% endblock %}
 
 {% block body_block %}
+
+<!-- Note association modal -->
+<div class="modal fade" id="add-note-modal" tabindex="-1" role="dialog" aria-labelledby="add-note-modal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Associate URL</h4>
+            </div>
+            <form action="{% url 'create_user_note_ajax' userdata.name %}" class="form-inline" method="POST" id="note-modal">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="note">Note</label>
+                    <textarea cols="30" class="form-control" type="text" id="note" name="note"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="note-modal-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- modmail association modal -->
+<div class="modal fade" id="add-modmail-modal" tabindex="-1" role="dialog" aria-labelledby="add-modmail-modal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modmail Link</h4>
+            </div>
+            <form action="{% url 'create_modmail_link_ajax' userdata.name %}" class="form-inline" method="POST" id="modmail-modal">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="modmail_id">Modmail</label>
+                    <input class="form-control" type="text" id="modmail_id" name="modmail_id" value="" size="20" />
+                </div>
+                <div class="form-group">
+                    <label for="subject">Modmail title</label>
+                    <input class="form-control" type="text" id="subject" name="subject" size="20" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="modmail-modal-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 {% if userdata %}
     <p><h1>User report for {{ userdata.name }}</h1></p>
     <p>Created: {{ userdata.created }}</p>
@@ -16,18 +80,23 @@
 
 <div class="row">
     <div class="col-md-8">
-        <p>Notes - <a href="{% url 'create_user_note' userdata.name %}">Add</a></p>
-        <hr>
-        {% if usernotes %}
-            <ul class="list-group">
-                {% for note in usernotes %}
-                    <li class="list-group-item"><p>{{ note.timestamp }} - {{ note.author }}</p>
-                    <p>{{ note.note }}</p></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No notes exist for this user.</p>
-        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>Notes  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
+            </div>
+            <div class="panel-body">
+                {% if usernotes %}
+                    <div class="panel panel-default">
+                        {% for note in usernotes %}
+                            <div class="panel-heading"><p>{{ note.timestamp }} - {{ note.author }}</p></div>
+                            <div class="panel-body"><p>{{ note.note }}</p></div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No notes exist for this user.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
         <p>Links</p>
@@ -42,7 +111,7 @@
         {% else %}
             <p>No reports are available.</p>
         {% endif %}
-        <p>Modmail - <a href="{% url 'create_modmail_link' userdata.name %}">Add</a></p>
+        <p>Modmail  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modmail-modal">Add Modmail</button></p>
         {% if modmail %}
             <ul>
             {% for mail in modmail %}

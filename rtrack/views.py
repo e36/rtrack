@@ -108,6 +108,37 @@ def create_association(request, report_id):
 
 
 @login_required
+def create_association_ajax(request, report_id):
+
+    if request.method == "POST":
+        form = UserReportLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # grab cleaned name data
+            user_name = form.cleaned_data['name']
+
+            # get name and report objects
+            # create the username object if it doesn't already exist
+            user_obj, c = Username.objects.get_or_create(name=user_name)
+            report_obj = Report.objects.get(pk=report_id)
+
+            # create the object - I'm using get_or_create so it only creates a DB entry if it doesn't already exist
+            UserReportLink.objects.get_or_create(name=user_obj, report=report_obj)
+
+            # return back to the report view
+            url = reverse('report', kwargs={'report_id': report_id})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = UserReportLinkForm()
+
+    url = reverse('report', kwargs={'report_id': report_id})
+    return HttpResponseRedirect(url)
+
+
+@login_required
 def create_url_link(request, report_id):
     if request.method == "POST":
         form = UrlReportLinkForm(request.POST)
@@ -135,6 +166,34 @@ def create_url_link(request, report_id):
 
 
 @login_required
+def create_url_link_ajax(request, report_id):
+    if request.method == "POST":
+        form = UrlReportLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # grab cleaned url datas
+            url = form.cleaned_data['url']
+
+            # get report object
+            report_obj = Report.objects.get(pk=report_id)
+
+            # get_or_create the url link db entry
+            UrlReportLink.objects.get_or_create(url=url, report=report_obj)
+
+            # return back to the report view
+            url = reverse('report', kwargs={'report_id': report_id})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = UrlReportLinkForm()
+
+    url = reverse('report', kwargs={'report_id': report_id})
+    return HttpResponseRedirect(url)
+
+
+@login_required
 def create_note_link(request, report_id):
     if request.method == "POST":
         form = NoteReportLinkForm(request.POST)
@@ -159,6 +218,37 @@ def create_note_link(request, report_id):
         form = NoteReportLinkForm()
 
     return render(request, 'rtrack/create_note_link.html', {'form': form, 'report_id': report_id})
+
+
+@login_required
+def create_note_link_ajax(request, report_id):
+    if request.method == "POST":
+        form = NoteReportLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # grab cleaned note datas
+            note = form.cleaned_data['note']
+
+            # get self data
+            self_data = User.objects.get(username=request.user.username)
+
+            # get report object
+            report_obj = Report.objects.get(pk=report_id)
+
+            # get_or_create the url link db entry
+            NoteReportLink.objects.get_or_create(note=note, author=self_data, report=report_obj)
+
+            # return back to the report view
+            url = reverse('report', kwargs={'report_id': report_id})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = NoteReportLinkForm()
+
+    url = reverse('report', kwargs={'report_id': report_id})
+    return HttpResponseRedirect(url)
 
 
 @login_required
@@ -221,6 +311,37 @@ def user_add_note(request, user_name):
         form = UsernameNoteForm()
 
     return render(request, 'rtrack/create_usernote.html', {'form': form, 'user_name': user_name})
+
+
+@login_required
+def user_add_note_ajax(request, user_name):
+    if request.method == "POST":
+        form = UsernameNoteForm(request.POST)
+
+        if form.is_valid():
+
+            # grab cleaned note data
+            note = form.cleaned_data['note']
+
+            # get user data
+            user_data = Username.objects.get(name=user_name)
+
+            # get self data
+            self_data = User.objects.get(username=request.user.username)
+
+            # create the note
+            UsernameNote.objects.create(username=user_data, author=self_data, note=note)
+
+            # return to the user_page view
+            url = reverse('user_page', kwargs={'user_name': user_name})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = UsernameNoteForm()
+
+    url = reverse('user_page', kwargs={'user_name': user_name})
+    return HttpResponseRedirect(url)
 
 
 @login_required
@@ -313,6 +434,37 @@ def create_modmail_link(request, user_name):
         form = ModmailLinkForm()
 
         return render(request, 'rtrack/create_modmail_link.html', {'form': form, 'user_name': user_name})
+
+
+@login_required
+def create_modmail_link_ajax(request, user_name):
+    if request.method == "POST":
+
+        form = ModmailLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # get username object
+            user_obj = Username.objects.get(name=user_name)
+
+            # get cleaned data ['subject', 'modmail_id', 'created_utc']
+            subject = form.cleaned_data['subject']
+            modmail_id = form.cleaned_data['modmail_id']
+            # created_utc = form.cleaned_data['created_utc']
+
+            # create the link
+            ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id)
+
+            # redirect to the user view
+            url = reverse('user_page', kwargs={'user_name': user_name})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = ModmailLinkForm()
+
+    url = reverse('user_page', kwargs={'user_name': user_name})
+    return HttpResponseRedirect(url)
 
 
 def user_login(request):

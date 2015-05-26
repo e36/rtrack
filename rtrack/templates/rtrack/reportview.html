@@ -4,6 +4,93 @@
 
 {% block body_block %}
 <div class="container">
+
+<!-- user account modal -->
+<div class="modal fade" id="add-account-modal" tabindex="-1" role="dialog" aria-labelledby="add-account-modal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Associate User Account</h4>
+            </div>
+            <form action="{% url 'createassociationajax' report_data.id %}" class="form-inline" method="POST" id="user-modal">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" id="name" name="name" value="" size="20" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="user-account-modal-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- URL association modal -->
+<div class="modal fade" id="add-url-modal" tabindex="-1" role="dialog" aria-labelledby="add-url-modal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Associate URL</h4>
+            </div>
+            <form action="{% url 'create_url_link_ajax' report_data.id %}" class="form-inline" method="POST" id="url-modal">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="url">URL</label>
+                    <input class="form-control" type="text" id="url" name="url" value="" size="20" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="url-modal-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Note association modal -->
+<div class="modal fade" id="add-note-modal" tabindex="-1" role="dialog" aria-labelledby="add-note-modal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Associate URL</h4>
+            </div>
+            <form action="{% url 'create_note_link_ajax' report_data.id %}" class="form-inline" method="POST" id="note-modal">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="note">Note</label>
+                    <textarea cols="30" class="form-control" type="text" id="note" name="note"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="note-modal-save">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% if report_data %}
     <p>Title: {{ report_data.title }}</p>
     <p>Description: {{ report_data.description }}</p>
@@ -15,34 +102,48 @@
 <p><a href="{% url 'index' %}">Back to the Index</a></p>
 
 <hr>
-{% if userlinkdata %}
-    <p>Associated Accounts - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>
-    {% for udata in userlinkdata %}
-        <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
-    {% endfor %}
-{% else %}
-    <p>No users associated with this report. - <a href="{% url 'createassociation' report_data.id %}">Add an account</a></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if userlinkdata %}
+        <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
+        {% for udata in userlinkdata %}
+            <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
+        {% endfor %}
+    {% else %}
+        <p>No users associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
+    {% endif %}
+    </div>
+</div>
 
-<hr>
-{% if urllinkdata %}
-    <p>Associated URLs - <a href="{% url 'create_url_link' report_data.id %}">Add a URL</a></p>
-    {% for udata in urllinkdata %}
-        <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
-    {% endfor %}
-{% else %}
-    <p>No URLs associated with this report. - <a href="{% url 'create_url_link' report_data.id %}">Add a URL</a></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if urllinkdata %}
+        <p>Associated URLs  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
+        {% for udata in urllinkdata %}
+            <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No URLs associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
+    {% endif %}
+    </div>
+</div>
 
-<hr>
-{% if notelinkdata %}
-    <p>Associated Notes - <a href="{% url 'create_note_link' report_data.id %}">Add a note</a></p>
-    {% for udata in notelinkdata %}
-        <p>{{ udata.note }}</p>
-    {% endfor %}
-{% else %}
-    <p>No notes associated with this report. - <a href="{% url 'create_note_link' report_data.id %}">Add a note</a></p>
-{% endif %}
+<div class="panel panel-default">
+    <div class="panel-body">
+    {% if notelinkdata %}
+        <p>Associated Notes  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
+        {% for udata in notelinkdata %}
+            <div class="panel panel-default">
+                <div class="panel-heading"><p>{{ udata.timestamp }} - {{ udata.author }}</p></div>
+                <div class="panel-body"><p>{{ udata.note }}</p></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
+    {% endif %}
+    </div>
+</div>
 
 </div>
+
 {% endblock %}

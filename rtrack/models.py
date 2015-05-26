@@ -49,6 +49,7 @@ class UrlReportLink(models.Model):
 
 class NoteReportLink(models.Model):
     note = models.TextField()
+    author = models.ForeignKey(User)
     timestamp = models.DateTimeField(auto_now_add=True)
     report = models.ForeignKey(Report)
 
