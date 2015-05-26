@@ -314,6 +314,37 @@ def user_add_note(request, user_name):
 
 
 @login_required
+def user_add_note_ajax(request, user_name):
+    if request.method == "POST":
+        form = UsernameNoteForm(request.POST)
+
+        if form.is_valid():
+
+            # grab cleaned note data
+            note = form.cleaned_data['note']
+
+            # get user data
+            user_data = Username.objects.get(name=user_name)
+
+            # get self data
+            self_data = User.objects.get(username=request.user.username)
+
+            # create the note
+            UsernameNote.objects.create(username=user_data, author=self_data, note=note)
+
+            # return to the user_page view
+            url = reverse('user_page', kwargs={'user_name': user_name})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = UsernameNoteForm()
+
+    url = reverse('user_page', kwargs={'user_name': user_name})
+    return HttpResponseRedirect(url)
+
+
+@login_required
 def search(request):
     if request.method == "POST":
 
@@ -403,6 +434,37 @@ def create_modmail_link(request, user_name):
         form = ModmailLinkForm()
 
         return render(request, 'rtrack/create_modmail_link.html', {'form': form, 'user_name': user_name})
+
+
+@login_required
+def create_modmail_link_ajax(request, user_name):
+    if request.method == "POST":
+
+        form = ModmailLinkForm(request.POST)
+
+        if form.is_valid():
+
+            # get username object
+            user_obj = Username.objects.get(name=user_name)
+
+            # get cleaned data ['subject', 'modmail_id', 'created_utc']
+            subject = form.cleaned_data['subject']
+            modmail_id = form.cleaned_data['modmail_id']
+            # created_utc = form.cleaned_data['created_utc']
+
+            # create the link
+            ModmailLink.objects.get_or_create(user=user_obj, subject=subject, modmail_id=modmail_id)
+
+            # redirect to the user view
+            url = reverse('user_page', kwargs={'user_name': user_name})
+            return HttpResponseRedirect(url)
+        else:
+            print(form.errors)
+    else:
+        form = ModmailLinkForm()
+
+    url = reverse('user_page', kwargs={'user_name': user_name})
+    return HttpResponseRedirect(url)
 
 
 def user_login(request):
