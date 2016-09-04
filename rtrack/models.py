@@ -8,6 +8,7 @@ from django.conf import settings
 class Username(models.Model):
     name = models.CharField(max_length=50, unique=True)
     created = models.DateTimeField(auto_now_add=True)
+    isspamaccount = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

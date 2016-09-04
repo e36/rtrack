@@ -70,6 +70,7 @@
 {% if userdata %}
     <p><h1>User report for {{ userdata.name }}</h1></p>
     <p>Created: {{ userdata.created }}</p>
+    <p>Spam account: {{ userdata.isspamaccount }}</p>
     <p><a href="{% url 'index' %}">Return to the index</a></p>
 
 {% else %}
