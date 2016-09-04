@@ -70,9 +70,9 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = 'rtrack.urls'
+ROOT_URLCONF = 'mysite.urls'
 
-WSGI_APPLICATION = 'rtrack.wsgi.application'
+WSGI_APPLICATION = 'mysite.wsgi.application'
 
 TEMPLATES = [
     {
