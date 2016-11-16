@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from rtrack.other import *
+
+from datetime import datetime
 # Create your views here.
 
 # TODO Implement timezones somehow, may require user accounts
@@ -126,6 +128,10 @@ def create_association_ajax(request, report_id):
             # create the object - I'm using get_or_create so it only creates a DB entry if it doesn't already exist
             UserReportLink.objects.get_or_create(name=user_obj, report=report_obj)
 
+            # update the report last_updated field
+            report_obj.last_updated = datetime.utcnow()
+            report_obj.save()
+
             # return back to the report view
             url = reverse('report', kwargs={'report_id': report_id})
             return HttpResponseRedirect(url)
@@ -183,6 +189,11 @@ def create_url_link_ajax(request, report_id):
 
             # return back to the report view
             url = reverse('report', kwargs={'report_id': report_id})
+
+            # update the report last_updated field
+            report_obj.last_updated = datetime.utcnow()
+            report_obj.save()
+
             return HttpResponseRedirect(url)
         else:
             print(form.errors)
@@ -238,6 +249,10 @@ def create_note_link_ajax(request, report_id):
 
             # get_or_create the url link db entry
             NoteReportLink.objects.get_or_create(note=note, author=self_data, report=report_obj)
+
+            # update the report last_updated field
+            report_obj.last_updated = datetime.utcnow()
+            report_obj.save()
 
             # return back to the report view
             url = reverse('report', kwargs={'report_id': report_id})
