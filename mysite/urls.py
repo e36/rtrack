@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from rtrack import views
 
@@ -25,9 +26,11 @@ urlpatterns = [
                     url(r'^admin/', include(admin.site.urls)),
                     url(r'^accounts/login/$', views.user_login, name='login'),
                     url(r'^accounts/logout/$', views.user_logout, name='logout'),
-                    # url(r'^password_change/$', views.change_password, name='password_change'),
-                    url(r'accounts/change_password', views.password_changed, kwargs={'post_change_redirect': 'password_changed'}, name='password_change'),
-                    url(r'^accounts/password_changed/$', views.password_changed, name='password_changed'),
+                    # url(r'accounts/change_password', views.password_changed, kwargs={'post_change_redirect': 'password_changed'}, name='password_change'),
+                    url(r'accounts/change-password/$', auth_views.password_change,
+                        {'template_name': 'registration/password_change_form.html'}, name='password_change'),
+                    url(r'accounts/password_changed/$', views.password_changed,
+                        {'template_name': 'registration/password_change_done.html'}, name='password_changed'),
                     url(r'report/(?P<report_id>\d+)/$', views.reportview, name='report'),
                     url(r'report/(?P<report_id>\d+)/createassociationajax/$', views.create_association_ajax, name='createassociationajax'),
                     url(r'report/(?P<report_id>\d+)/deleteassociation/(?P<user_name>[-\w]+)/$', views.remove_user_link, name='remove_user_link'),

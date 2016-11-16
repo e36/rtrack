@@ -12,7 +12,7 @@ def builduserlist():
     return_list = []
 
     # get a list of usernames
-    user_list = Username.objects.all()
+    user_list = Username.objects.order_by('-created')[:10]
 
     # for each user, look up and count the number of links
     for user in user_list:
