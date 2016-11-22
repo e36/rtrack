@@ -102,10 +102,21 @@
 <p><a href="{% url 'index' %}">Back to the Index</a></p>
 
 <hr>
+
+<!-- User list -->
 <div class="panel panel-default">
     <div class="panel-body">
+        Associated Accounts
+        <form action="{% url 'createassociationajax' report_data.id %}" class="form-inline" method="POST" id="user-modal">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" type="text" id="name" name="name" value="" size="20" />
+                <button type="submit" class="btn btn-primary" id="user-account-modal-save">Add User</button>
+            </div>
+        </form>
     {% if userlinkdata %}
-        <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p>
+        <!-- <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p> -->
+
         {% for udata in userlinkdata %}
             <p><a href="{% url 'user_page' udata.name %}">{{ udata.name }}</a> - {{ udata.timestamp }} - <a href="{% url 'remove_user_link' report_data.id udata.name %}">delete association</a></p>
         {% endfor %}
@@ -115,10 +126,17 @@
     </div>
 </div>
 
+<!-- URL List -->
 <div class="panel panel-default">
     <div class="panel-body">
+        <p>Associated URLs</p>
+        <form action="{% url 'create_url_link_ajax' report_data.id %}" class="form-inline" method="POST" id="url-modal">
+            {% csrf_token %}
+            <input class="form-control" type="text" id="url" name="url" value="" size="60" />
+            <button type="submit" class="btn btn-primary" id="url-modal-save">Add URL</button>
+        </form>
     {% if urllinkdata %}
-        <p>Associated URLs  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-url-modal">Add URL</button></p>
+
         {% for udata in urllinkdata %}
             <p><a href="{{ udata.url }}">{{ udata.url }}</a> - {{ udata.timestamp }}</p>
         {% endfor %}
@@ -130,8 +148,14 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
+        <p>Notes
+        <form action="{% url 'create_note_link_ajax' report_data.id %}" class="form-inline" method="POST" id="note-modal">
+            {% csrf_token %}
+            <textarea cols="60" class="form-control" type="text" id="note" name="note"></textarea>
+            <button type="submit" class="btn btn-primary" id="note-modal-save">Save</button>
+
+        </form></p>
     {% if notelinkdata %}
-        <p>Associated Notes  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
         {% for udata in notelinkdata %}
             <div class="panel panel-default">
                 <div class="panel-heading"><p>{{ udata.timestamp }} - {{ udata.author }}</p></div>
