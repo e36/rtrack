@@ -99,7 +99,7 @@
 {% else %}
     <p>No report data is available.</p>
 {% endif %}
-<p><a href="{% url 'index' %}">Back to the Index</a></p>
+<p><a href="{% url 'index' %}">Back to the Index</a> | <a href="{% url 'readonly' report_data.id %}">Read-Only View</a></p>
 
 <hr>
 
