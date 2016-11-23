@@ -1,0 +1,59 @@
+{% extends 'rtrack/base.html' %}
+
+{% block title %}read-only{% endblock %}
+
+{% block body_block %}
+
+<div class="container">
+    {% if report_data %}
+        <p>Title: {{ report_data.title }}</p>
+        <p>Description: {{ report_data.description }}</p>
+        <p>Created: {{ report_data.created }}</p>
+        <p>Last Updated: {{ report_data.last_updated }}</p>
+    {% else %}
+        <p>No report data is available.</p>
+    {% endif %}
+</div>
+
+<hr>
+
+<p><h2>Users</h2></p>
+<div class="container">
+    {% if userlist %}
+
+        {% for udata in userlist %}
+            <p>{{ udata }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No users associated with this report.</p>
+    {% endif %}
+</div>
+
+<p><h2>URLs</h2></p>
+<div class="container">
+    {% if urllinkdata %}
+
+        {% for udata in urllinkdata %}
+            <p>{{ udata.url }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No URLs associated with this report.</p>
+    {% endif %}
+</div>
+
+<p><h2>Notes</h2></p>
+<div class="container">
+    {% if notelinkdata %}
+        {% for udata in notelinkdata %}
+            <div class="panel panel-default">
+                <div class="panel-heading"><p>{{ udata.timestamp }} - {{ udata.author }}</p></div>
+                <div class="panel-body"><p>{{ udata.note }}</p></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes associated with this report.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+

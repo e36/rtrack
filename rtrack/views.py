@@ -571,3 +571,33 @@ def about(request):
     """
 
     return render(request, 'rtrack/about.html')
+
+
+@login_required
+def readonly(request, report_id):
+    """
+    Gets report data and sends it to the report.html view.  This is basically just read-only data for sending
+    To the admins
+    :param request:
+    :param report_id:
+    :return:
+    """
+    report_data = Report.objects.get(id=report_id)
+    userlinkdata = UserReportLink.objects.filter(report=report_id)
+    urllinkdata = UrlReportLink.objects.filter(report=report_id)
+    notelinkdata = NoteReportLink.objects.filter(report=report_id)
+
+    # append "u/" to each username
+    userlist = []
+    for u in userlinkdata:
+        username = "u/" + str(u.name)
+        userlist.append(username)
+
+
+    context = {'report_data': report_data,
+               'userlist': userlist,
+               'urllinkdata': urllinkdata,
+               'notelinkdata': notelinkdata,
+               }
+
+    return render(request, 'rtrack/readonly.html', context)
