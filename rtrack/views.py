@@ -576,7 +576,7 @@ def about(request):
 @login_required
 def readonly(request, report_id):
     """
-    Gets report data and sends it to the report.html view.  This is basically just read-only data for sending
+    Gets report data and sends it to the readonly.html view.  This is basically just read-only data for sending
     To the admins
     :param request:
     :param report_id:
