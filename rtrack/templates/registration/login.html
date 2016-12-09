@@ -1,25 +1,34 @@
 {% extends 'registration/base.html' %}
 {% block body_block %}
-
+<h1>rtrack</h1>
 {% if errors %}
 <p>{{ errors }}</p>
 {% endif %}
 
 
-<form method="post" class="form-inline" action="{% url 'login' %}">
+<form method="post" class="form-horizontal" action="{% url 'login' %}">
 {% csrf_token %}
 <div class="form-group">
-    <label for="username">Username</label>
-    <input class="form-control" type="text" id="username" name="username" value="" size="20" />
+    <label for="username" class="col-md-4 control-label">Username</label>
+    <div class="col-md-4">
+        <input id="username" name="username" type="text" placeholder="" class="form-control input-md" required="">
+    </div>
 </div>
 
 <div class="form-group">
-    <label for="pword">Password</label>
-    <input class="form-control" type="password" id="pword" name="password" value="" size="20" />
+    <label class="col-md-4 control-label" for="pword">Password</label>
+    <div class="col-md-4">
+        <input id="pword" name="password" type="password" placeholder="" class="form-control input-md" required="">
+    </div>
 </div>
 
 
-<button type="submit" class="btn btn-default">Log In</button>
+<div class="form-group">
+    <label class="col-md-4 control-label" for="submitbutton"></label>
+    <div class="col-md-4">
+        <button id="submitbutton" name="submitbutton" class="btn btn-primary">Log In</button>
+    </div>
+</div>
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
