@@ -29,11 +29,15 @@ def reportview(request, report_id):
     userlinkdata = UserReportLink.objects.filter(report=report_id)
     urllinkdata = UrlReportLink.objects.filter(report=report_id)
     notelinkdata = NoteReportLink.objects.filter(report=report_id)
+    urllinkdatafiltered = UrlReportLink.objects.filter(report=report_id).order_by('-timestamp')[:5]
+    userlinkdatafiltered = UserReportLink.objects.filter(report=report_id).order_by('-timestamp')[:5]
 
     context = {'report_data': report_data,
                'userlinkdata': userlinkdata,
                'urllinkdata': urllinkdata,
                'notelinkdata': notelinkdata,
+               'urllinkdatafiltered': urllinkdatafiltered,
+               'userlinkdatafiltered': userlinkdatafiltered,
                }
 
     return render(request, 'rtrack/reportview.html', context)
