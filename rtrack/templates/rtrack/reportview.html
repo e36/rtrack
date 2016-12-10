@@ -114,6 +114,7 @@
                 <button type="submit" class="btn btn-primary" id="user-account-modal-save">Add User</button>
             </div>
         </form>
+
     {% if userlinkdata %}
         <!-- <p>Associated Accounts  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-account-modal">Add account</button></p> -->
 
@@ -165,6 +166,54 @@
     {% else %}
         <p>No notes associated with this report.  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-note-modal">Add Note</button></p>
     {% endif %}
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>Export data</p>
+
+
+    <button id="togglereport" name="Show report">Show report</button>
+    <button id="sendtoadmins">Send report to the admins</button>
+    <textarea cols="60" rows="10" class="form-control" type="text" id="copypaste" name="copypaste" style="display:none;"></textarea>
+    <script type="text/javascript">
+
+    var body = "Recent usernames:\n";
+    {% for udata in userlinkdatafiltered %}
+        body += "\n- /u/{{ udata.name }}";
+    {% endfor %}
+    body += "\n\nRecent URLs:\n"
+    {% for urldata in urllinkdatafiltered %}
+        body += "\n- {{ urldata.url }}";
+    {% endfor %}
+
+    $("#copypaste").text(body);
+    $(document).ready(function() {
+        $("#togglereport").click( function(){
+            if($("#copypaste").css("display")=="none") {
+                $("#copypaste").css("display", "unset");
+                $("#togglereport").text("Hide report");
+                $('html, body').scrollTop( $(document).height() - $(window).height() );
+            } else {
+                $("#copypaste").css("display", "none");
+                $("#togglereport").text("Show report");
+            }
+        });
+    });
+    $(document).ready(function() {
+        $("#sendtoadmins").click( function(){
+           var baseUrl = "https://www.reddit.com/message/compose?to=/r/reddit.com&message=";
+           baseUrl += encodeURIComponent($("#copypaste").val());
+           var win = window.open(baseUrl, '_blank');
+           if (win) {
+               win.focus();
+           } else {
+               alert('Please allow popups for this website');
+           }
+        });
+    });
+    </script>
     </div>
 </div>
 
