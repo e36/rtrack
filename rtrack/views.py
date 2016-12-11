@@ -597,7 +597,6 @@ def readonly(request, report_id):
         username = "u/" + str(u.name)
         userlist.append(username)
 
-
     context = {'report_data': report_data,
                'userlist': userlist,
                'urllinkdata': urllinkdata,
@@ -605,3 +604,18 @@ def readonly(request, report_id):
                }
 
     return render(request, 'rtrack/readonly.html', context)
+
+
+def slack_request(request):
+    """
+    Handles the incoming requests from slack
+    :param request:
+    :return:
+    """
+
+    if request.method == 'GET':
+
+        # check to make sure that the token coming from the slack request matches the one in the settings
+        if settings.SLACK_TOKEN == request.GET.get('token'):
+
+            return HttpResponse(status=200)
