@@ -44,6 +44,6 @@ urlpatterns = [
                     url(r'user/(?P<user_name>[-\w]+)/modmail_link/$', views.create_modmail_link, name='create_modmail_link'),
                     url(r'user/(?P<user_name>[-\w]+)/modmail_link/$', views.create_modmail_link_ajax, name='create_modmail_link_ajax'),
                     url(r'create_user/$', views.add_user, name='create_user'),
-                    url(r'/slack/$', views.slack_request, name='slack_request'),
+                    url(r'slack/$', views.slack_request, name='slack_request'),
                     url(r'about/$', views.about, name='about'),
 ]
