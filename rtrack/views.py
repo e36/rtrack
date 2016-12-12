@@ -9,8 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rtrack.other import *
 
-from pprint import pprint
-
 from datetime import datetime
 # Create your views here.
 
@@ -618,9 +616,11 @@ def slack_request(request):
 
     incoming_token = request.POST.get('token', '')
 
+    request_info = 'team_id:' + str(request.POST.get('team_id')) + ' team_domain: ' + str(request.POST.get('team_domain')) + ' channel_name: ' + str(request.POST.get('channel_name')) + ' user_name: ' + str(request.POST.get('user_name')) + ' command: ' + str(request.POST.get('command')) + ' text: ' + str(request.POST.get('text')) + ' response_url: ' + str(request.POST.get('response_url'))
+
     returndict = {
         'response_type': 'in_channel',
-        'text': 'NICE',
+        'text': request_info,
     }
 
     if request.method == 'POST':
