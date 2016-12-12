@@ -5,12 +5,14 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.csrf import csrf_exempt
+
 from rtrack.other import *
+
+from pprint import pprint
 
 from datetime import datetime
 # Create your views here.
-
-# TODO Implement timezones somehow, may require user accounts
 
 
 @login_required
@@ -606,6 +608,7 @@ def readonly(request, report_id):
     return render(request, 'rtrack/readonly.html', context)
 
 
+@csrf_exempt
 def slack_request(request):
     """
     Handles the incoming requests from slack
@@ -613,9 +616,13 @@ def slack_request(request):
     :return:
     """
 
-    if request.method == 'GET':
+    incoming_token = request.POST.get('token', '')
+
+    if request.method == 'POST':
 
         # check to make sure that the token coming from the slack request matches the one in the settings
-        if settings.SLACK_TOKEN == request.GET.get('token'):
+        if settings.SLACK_TOKEN == incoming_token:
 
             return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=403)
