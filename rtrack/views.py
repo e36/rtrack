@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth import authenticate, login, logout
@@ -618,11 +618,16 @@ def slack_request(request):
 
     incoming_token = request.POST.get('token', '')
 
+    returndict = {
+        'response_type': 'in_channel',
+        'text': 'NICE',
+    }
+
     if request.method == 'POST':
 
         # check to make sure that the token coming from the slack request matches the one in the settings
         if settings.SLACK_TOKEN == incoming_token:
 
-            return HttpResponse(status=200)
+            return JsonResponse(returndict, content_type='application/json')
         else:
             return HttpResponse(status=403)
