@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rtrack.other import *
 
 from datetime import datetime
+
+from rtrack.slack import handle_slack_request
 # Create your views here.
 
 
@@ -614,20 +616,23 @@ def slack_request(request):
     :return:
     """
 
-    incoming_token = request.POST.get('token', '')
-
-    request_info = 'team_id:' + str(request.POST.get('team_id')) + ' team_domain: ' + str(request.POST.get('team_domain')) + ' channel_name: ' + str(request.POST.get('channel_name')) + ' user_name: ' + str(request.POST.get('user_name')) + ' command: ' + str(request.POST.get('command')) + ' text: ' + str(request.POST.get('text')) + ' response_url: ' + str(request.POST.get('response_url'))
-
-    returndict = {
-        'response_type': 'in_channel',
-        'text': request_info,
+    slackdata = {
+        'user_id': request.POST.get('user_id'),
+        'user_name': request.POST.get('user_name'),
+        'command': request.POST.get('command'),
+        'text': request.POST.get('text'),
+        'response_url': request.POST.get('response_url')
     }
+
+    incoming_token = request.POST.get('token', '')
 
     if request.method == 'POST':
 
         # check to make sure that the token coming from the slack request matches the one in the settings
         if settings.SLACK_TOKEN == incoming_token:
 
-            return JsonResponse(returndict, content_type='application/json')
+            retdata = handle_slack_request(slackdata)
+
+            return JsonResponse(retdata, content_type='application/json')
         else:
             return HttpResponse(status=403)

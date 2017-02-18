@@ -34,7 +34,6 @@
                 <li><a href="{% url 'search' %}">search</a></li>
                 <li><a href="">{% if user.is_authenticated %}Welcome, {{ user.username }}{% endif %}</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
-                <li><a href="{% url 'password_change' %}">change password!</a></li>
                 <li><a href="{% url 'about' %}">about</a></li>
             </ul>
         </div>

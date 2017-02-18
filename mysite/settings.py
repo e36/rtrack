@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'e6n#m+_aqsa+)2g_4f=l4hm@s6jmaeekxgg@6*yerocdm=uvg@'
-SLACK_TOKEN = 'token'
+SLACK_TOKEN = 'kK8Pi4UbHpX1AdmauBR8pQkS'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -110,9 +110,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'rtrack_dev',
-        'USER': 'rtrackdevuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'USER': 'rtrack_user',
+        'PASSWORD': 'Gbjp36Nu',
+        'HOST': '192.168.1.222',   # Or an IP Address that your DB is hosted on
         'PORT': '5432',
     }
 }
